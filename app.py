@@ -36,11 +36,7 @@ def telegram_bot():
   # Extrai dados para mostrar mensagem recebida
   first_name = update["message"]["from"]["first_name"]
   sender_id = update["message"]["from"]["id"]
-  if "text" not in update["message"]:
-    continue  # Essa mensagem não é um texto!
-    message = update["message"]["text"]
-    chat_id = update["message"]["chat"]["id"]
-    datahora = str(datetime.datetime.fromtimestamp(update["message"]["date"]))
+  datahora = str(datetime.datetime.fromtimestamp(update["message"]["date"]))
     if "username" in update["message"]["from"]:
       username = update["message"]["from"]["username"]
     else:
