@@ -37,11 +37,11 @@ def telegram_bot():
   first_name = update["message"]["from"]["first_name"]
   sender_id = update["message"]["from"]["id"]
   datahora = str(datetime.datetime.fromtimestamp(update["message"]["date"]))
-    if "username" in update["message"]["from"]:
-      username = update["message"]["from"]["username"]
-    else:
-      username = "[não definido]"
-    mensagens.append([datahora, "recebida", username, first_name, chat_id, message])
+  if "username" in update["message"]["from"]:
+    username = update["message"]["from"]["username"]
+  else:
+    username = "[não definido]"
+  mensagens.append([datahora, "recebida", username, first_name, chat_id, message])
   
   if message == "/start":
     texto_resposta = "Olá! Seja bem-vinda(o). Se você chegou aqui está preocupado com o avanço dos incêndios florestais. Envie o nome de sua cidade para saber se está próximo a focos de incêndio:"
