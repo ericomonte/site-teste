@@ -24,7 +24,90 @@ sheet = planilha.worksheet("updates")
 app = Flask(__name__)
 
 
+@app.route("/telegram-bot", methods=["POST"])
+def telegram_bot():
+  update = request.json
+  chat_id = update["message"]["chat"]["id"]
+  message = update["message"]["text"]
+  nova_mensagem = {"chat_id": chat_id, "text": message}
+  requests.post(f"https://api.telegram.org./bot{TELEGRAM_API_KEY}/sendMessage", data=nova_mensagem)
 
+#for update in dados:
+  update_id = update["update_id"]
+  # Extrai para mostrar mensagem recebida
+  first_name = update["message"]["from"]["first_name"]
+  sender_id = update["message"]["from"]["id"]
+  if "text" not in update["message"]:
+    continue  # Essa mensagem não é um texto!
+  message = update["message"]["text"]
+  chat_id = update["message"]["chat"]["id"]
+  datahora = str(datetime.datetime.fromtimestamp(update["message"]["date"]))
+  if "username" in update["message"]["from"]:
+    username = update["message"]["from"]["username"]
+  else:
+    username = "[não definido]"
+  print(f"[{datahora}] Nova mensagem de {first_name} @{username} ({chat_id}): {message}")
+  mensagens.append([datahora, "recebida", username, first_name, chat_id, message])
+
+  # Define qual será a resposta e envia
+  if message == "/start":
+    texto_resposta = "Olá! Seja bem-vinda(o). Se você chegou aqui está preocupado com o avanço dos incêndios florestais. Envie o nome de sua cidade para saber se está próximo a focos de incêndio:"
+  else:
+    cidade_bot = message
+    # recebe a cidade pelo bot do telegram
+    cidade_bot = unidecode(cidade_bot)
+    cidade_bot = cidade_bot.lower()
+
+    try:
+      cell = sheet_municipios.find(cidade_bot)
+
+    # Obter as coordenadas da célula encontrada
+      row = cell.row
+      col = cell.col
+
+    # Selecionar a célula imediatamente à direita
+      latitude = sheet_municipios.cell(row, col+1).value
+      longitude = sheet_municipios.cell(row, col+2).value
+
+      cidade_bot_coord = (float(latitude), float(longitude))
+
+      inpe_focos48h_url = 'https://queimadas.dgi.inpe.br/home/download?id=focos_brasil&time=48h&outputFormat=csv&utm_source=landing-page&utm_medium=landing-page&utm_campaign=dados-abertos&utm_content=focos_brasil_48h'
+      foco_atual = pd.read_csv(inpe_focos48h_url)
+
+    # Remove algumas colunas
+      foco_atual = foco_atual[['latitude', 'longitude',	'estado', 'municipio', 'municipio_id',	'estado_id', 'bioma']]
+    # Coloca em maiúsculas
+      foco_atual['municipio'] = [x.upper() for x in foco_atual['municipio']]
+    # remove acentos
+      foco_atual['nome'] = foco_atual['municipio'].str.normalize('NFKD').str.encode('ascii', errors='ignore').str.decode('utf-8')
+
+      coordenadas = []
+      distancia = []
+      for x, y in zip(foco_atual.latitude.values, foco_atual.longitude.values):
+        lat_long = (x,y)
+        coordenadas.append(lat_long)
+      for n in coordenadas:
+        km = haversine(cidade_bot_coord, n)
+        distancia.append(km)
+      foco_atual['distancia_km'] = distancia
+      foco_incendio = int(foco_atual['distancia_km'].min())
+      #print(f'O foco de incêndio mais próximo, detectado pelo Inpe nas últimas 48h, encontra-se a {foco_incendio}km de você.')
+      texto_resposta = (f"O foco de incêndio mais próximo, detectado pelo Inpe nas últimas 48h, encontra-se a {foco_incendio}km de você.") 
+   
+    except gspread.exceptions.CellNotFound:
+     # Envia mensagem de erro para o usuário
+        texto_resposta = "Desculpe, não foi possível encontrar a cidade que você digitou. Por favor, tente novamente usando o comando /start."
+        
+    # texto_resposta = "Não entendi! Por favor digite /start."
+    
+  nova_mensagem = {"chat_id": chat_id, "text": texto_resposta}
+  requests.post(f"https://api.telegram.org./bot{token}/sendMessage", data=nova_mensagem)
+  mensagens.append([datahora, "enviada", username, first_name, chat_id, texto_resposta])
+# Atualiza planilha do sheets com último update processado
+sheet.append_rows(mensagens)
+sheet.update("A1", update_id)
+  
+  return "ok"
 
 
 
@@ -36,7 +119,7 @@ app = Flask(__name__)
 
 
 menu = """
-<a href="/">Página inicial</a>  | <a href="/promocoes">PROMOÇÕES</a> |  <a href="/sobre">Sobre</a>  | <a href="/contato">Contato</a><br>
+<a href="/">Página inicial</a>  |  <a href="/sobre">Sobre</a>  | <a href="/contato">Contato</a><br>
 """
 
 @app.route("/")
@@ -51,20 +134,6 @@ def sobre():
 def contato():
   return menu + "Aqui vai o conteúdo da página contato"
 
-
-
-@app.route("/promocoes")
-def promocoes():
-  conteudo = menu + """
-  Encontrei as seguintes promoções no <a href="https://t.me/promocoeseachadinhos">@promocoeseachadinhos</a>:
-  <br>
-  <ul>
-  """
-  for promocao in ultimas_promocoes():
-    conteudo += f"<li>{promocao}</li>"
-  return conteudo + "</ul>"
-
-
 @app.route("/dedoduro")
 def dedoduro():
   mensagem = {"chat_id": TELEGRAM_ADMIN_ID, "text": "Alguém acessou a página dedo duro!"}
@@ -76,13 +145,6 @@ def dedoduro2():
   sheet.append_row(["Érico", "Monte", "a partir do Flask"])
   return "Planilha escrita!"
 
-@app.route("/telegram-bot", methods=["POST"])
-def telegram_bot():
-  update = request.json
-  message = update["message"]["text"]
-  chat_id = update["message"]["chat"]["id"]
-  nova_mensagem = {"chat_id": chat_id, "text": message}
-  requests.post(f"https://api.telegram.org./bot{TELEGRAM_API_KEY}/sendMessage", data=nova_mensagem)
-  return "ok"
+
 
 
