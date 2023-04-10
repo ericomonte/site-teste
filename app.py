@@ -19,7 +19,6 @@ conta = ServiceAccountCredentials.from_json_keyfile_name("credenciais.json")
 api = gspread.authorize(conta) # sheets.new
 planilha = api.open_by_key("1RAvxiZG3f-WhfnX2I7XgyB6TKhyVxuJT5vVAMzO45_U")
 sheet_municipios = planilha.worksheet("municipios")
-sheet = planilha.worksheet("updates")
 
 app = Flask(__name__)
 
@@ -76,7 +75,6 @@ def telegram_bot():
   
   nova_mensagem = {"chat_id": chat_id, "text": texto_resposta}
   requests.post(f"https://api.telegram.org./bot{TELEGRAM_API_KEY}/sendMessage", data=nova_mensagem)
-
   return
 
 menu = """
