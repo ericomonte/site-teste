@@ -99,7 +99,7 @@ def telegram_bot():
     # texto_resposta = "Não entendi! Por favor digite /start."
     
   nova_mensagem = {"chat_id": chat_id, "text": texto_resposta}
-  requests.post(f"https://api.telegram.org./bot{token}/sendMessage", data=nova_mensagem)
+  requests.post(f"https://api.telegram.org./bot{TELEGRAM_API_KEY}/sendMessage", data=nova_mensagem)
   mensagens.append([datahora, "enviada", username, first_name, chat_id, texto_resposta])
 # Atualiza planilha do sheets com último update processado
   sheet.append_rows(mensagens)
