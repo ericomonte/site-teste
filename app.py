@@ -5,7 +5,7 @@ import gspread
 import pandas as pd
 import requests
 
-from flask import Flask
+from flask import Flask, request
 from haversine import haversine
 from oauth2client.service_account import ServiceAccountCredentials
 from unidecode import unidecode
@@ -75,5 +75,14 @@ def dedoduro():
 def dedoduro2():
   sheet.append_row(["Érico", "Monte", "a partir do Flask"])
   return "Planilha escrita!"
+
+@app.route("/telegram-bot")
+def telegram_bot():
+  update = request.json
+  message = update["message"]["text"]
+  chat_id = update["message"]["chat"]["id"]
+  nova_mensagem = {"chat_id": chat_id, "text": message}
+  requests.post(f"https://api.telegram.org./bot{token}/sendMessage", data=nova_mensagem)
+  return "ok"
 
 
