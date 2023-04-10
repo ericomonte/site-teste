@@ -31,13 +31,16 @@ def telegram_bot():
   message = update["message"]["text"]
   nova_mensagem = {"chat_id": chat_id, "text": message}
   requests.post(f"https://api.telegram.org./bot{TELEGRAM_API_KEY}/sendMessage", data=nova_mensagem)
-  
+  update_id = update["id]
+                     
   # Define qual será a resposta e envia
   if message == "/start":
     texto_resposta = "Olá! Seja bem-vinda(o). Se você chegou aqui está preocupado com o avanço dos incêndios florestais. Envie o nome de sua cidade para saber se está próximo a focos de incêndio:"
   else:
     texto_resposta = "Não entendi."
-  
+  nova_mensagem = {"chat_id": chat_id, "text": texto_resposta}
+  requests.post(f"https://api.telegram.org./bot{token}/sendMessage", data=nova_mensagem)
+  sheet.update("A1", update_id)
   return "Ok"
 
 menu = """
