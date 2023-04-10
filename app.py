@@ -31,23 +31,21 @@ def telegram_bot():
   message = update["message"]["text"]
   nova_mensagem = {"chat_id": chat_id, "text": message}
   requests.post(f"https://api.telegram.org./bot{TELEGRAM_API_KEY}/sendMessage", data=nova_mensagem)
-
-#for update in dados:
   update_id = update["update_id"]
   # Extrai para mostrar mensagem recebida
-  first_name = update["message"]["from"]["first_name"]
-  sender_id = update["message"]["from"]["id"]
-  if "text" not in update["message"]:
-    continue  # Essa mensagem não é um texto!
-  message = update["message"]["text"]
-  chat_id = update["message"]["chat"]["id"]
-  datahora = str(datetime.datetime.fromtimestamp(update["message"]["date"]))
-  if "username" in update["message"]["from"]:
-    username = update["message"]["from"]["username"]
-  else:
-    username = "[não definido]"
-  print(f"[{datahora}] Nova mensagem de {first_name} @{username} ({chat_id}): {message}")
-  mensagens.append([datahora, "recebida", username, first_name, chat_id, message])
+  #first_name = update["message"]["from"]["first_name"]
+  #sender_id = update["message"]["from"]["id"]
+  #if "text" not in update["message"]:
+  #  continue  # Essa mensagem não é um texto!
+  #message = update["message"]["text"]
+  #chat_id = update["message"]["chat"]["id"]
+  #datahora = str(datetime.datetime.fromtimestamp(update["message"]["date"]))
+  #if "username" in update["message"]["from"]:
+  #  username = update["message"]["from"]["username"]
+  #else:
+   # username = "[não definido]"
+  #print(f"[{datahora}] Nova mensagem de {first_name} @{username} ({chat_id}): {message}")
+  #mensagens.append([datahora, "recebida", username, first_name, chat_id, message])
 
   # Define qual será a resposta e envia
   if message == "/start":
@@ -104,9 +102,8 @@ def telegram_bot():
   requests.post(f"https://api.telegram.org./bot{token}/sendMessage", data=nova_mensagem)
   mensagens.append([datahora, "enviada", username, first_name, chat_id, texto_resposta])
 # Atualiza planilha do sheets com último update processado
-sheet.append_rows(mensagens)
-sheet.update("A1", update_id)
-  
+  sheet.append_rows(mensagens)
+  sheet.update("A1", update_id)
   return "ok"
 
 
