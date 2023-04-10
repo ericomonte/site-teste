@@ -33,15 +33,6 @@ def telegram_bot():
   requests.post(f"https://api.telegram.org./bot{TELEGRAM_API_KEY}/sendMessage", data=nova_mensagem)
                        
   update_id = update["update_id"]
-  # Extrai dados para mostrar mensagem recebida
-  first_name = update["message"]["from"]["first_name"]
-  sender_id = update["message"]["from"]["id"]
-  datahora = str(datetime.datetime.fromtimestamp(update["message"]["date"]))
-  if "username" in update["message"]["from"]:
-    username = update["message"]["from"]["username"]
-  else:
-    username = "[não definido]"
-  mensagens.append([datahora, "recebida", username, first_name, chat_id, message])
   
   if message == "/start":
     texto_resposta = "Olá! Seja bem-vinda(o). Se você chegou aqui está preocupado com o avanço dos incêndios florestais. Envie o nome de sua cidade para saber se está próximo a focos de incêndio:"
@@ -95,9 +86,6 @@ def telegram_bot():
     
   nova_mensagem = {"chat_id": chat_id, "text": texto_resposta}
   requests.post(f"https://api.telegram.org./bot{TELEGRAM_API_KEY}/sendMessage", data=nova_mensagem)
-  mensagens.append([datahora, "enviada", username, first_name, chat_id, texto_resposta])
-  # Atualiza planilha do sheets com último update processado
-  sheet.append_rows(mensagens)
   sheet.update("A1", update_id)
   return "Ok"
 
