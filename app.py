@@ -39,6 +39,8 @@ def telegram_bot():
     # procura a cidade na planilha do sheets onde consta a base de municipios do IBGE + respectivas coordenadas de latitude e longitude
       cell = sheet.find(message)
     
+    except gspread.CellNotFound:
+      row = None
     # obtém as coordenadas da célula encontrada e caprura os dados nas colunas à direita
       row = cell.row
       col = cell.col
