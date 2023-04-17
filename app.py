@@ -35,7 +35,9 @@ def telegram_bot():
     texto_resposta = "Olá! Seja bem-vinda(o). Se você chegou aqui está preocupado com o avanço dos incêndios florestais. Envie o nome de sua cidade para saber se está próximo a focos de incêndio:"
   else:
     texto_resposta = "Não entendi."
-  
+    nova_mensagem = {"chat_id": chat_id, "text": texto_resposta}
+  requests.post(f"https://api.telegram.org./bot{TELEGRAM_API_KEY}/sendMessage", data=nova_mensagem)
+
   return
 
 menu = """
