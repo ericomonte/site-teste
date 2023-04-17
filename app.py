@@ -56,7 +56,10 @@ def telegram_bot():
 
   if message == "/start":
     texto_resposta = "Olá! Seja bem-vinda(o). Se você chegou aqui está preocupado com o avanço dos incêndios florestais. Envie o nome de sua cidade para saber se está próximo a focos de incêndio:"
-
+  
+  else:
+    texto_resposta = "Resposta errada."
+  
   nova_mensagem = {
     "chat_id": chat_id,
     "text": texto_resposta,
