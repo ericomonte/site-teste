@@ -40,8 +40,8 @@ def telegram_bot():
     # obtém as coordenadas da célula encontrada e caprura os dados nas colunas à direita
     row = cell.row
     col = cell.col
-    latitude = sheet_municipios.cell(row, col+1).value
-    longitude = sheet_municipios.cell(row, col+2).value
+    latitude = sheet.cell(row, col+1).value
+    longitude = sheet.cell(row, col+2).value
     message_coord = (float(latitude), float(longitude))
     
     # acessa a api do Programa Queimadas do INPE com os dados de novos focos de incêndio nas últimas 48h
