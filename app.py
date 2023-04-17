@@ -26,10 +26,11 @@ def telegram_bot():
   chat_id = update["message"]["chat"]["id"]
   message = update["message"]["text"]
 
-  if message == "/start":
+  
+  if message in ("/start", "oi", "Olá", "ola", "Ola", "Oi", "Olá!", "olá", "Oi!", "Bom dia", "Boa tarde", "Boa noite" "Opa", "Opa!", "opa", "oi!"):
     texto_resposta = "Olá! Seja bem-vinda(o). Se você chegou aqui está preocupado com o avanço dos incêndios florestais. Envie o nome de sua cidade para saber se está próximo a focos de incêndio:"
   
-  elif:
+  else:
     # recebe a cidade pelo bot do telegram retira acentos e transforma em caixa baixa
     message = unidecode(message)
     message = message.lower()
@@ -66,8 +67,8 @@ def telegram_bot():
     
     texto_resposta = (f"O foco de incêndio mais próximo, detectado pelo Inpe nas últimas 48h, encontra-se a {foco_incendio}km de você.")
     
-    else:
-      texto_resposta = "Olá, não entendi o que você quis dizer. Se você chegou aqui está preocupado com o avanço dos incêndios florestais. Envie o nome de sua cidade para saber se está próximo a focos de incêndio:"
+    #else:
+      #texto_resposta = "Olá, não entendi o que você quis dizer. Se você chegou aqui está preocupado com o avanço dos incêndios florestais. Envie o nome de sua cidade para saber se está próximo a focos de incêndio:"
   
   nova_mensagem = {
     "chat_id": chat_id,
