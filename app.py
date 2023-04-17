@@ -55,7 +55,7 @@ def telegram_bot():
   message = update["message"]["text"]
   nova_mensagem = {
     "chat_id": chat_id,
-    "text": f"Você enviou a mensagem: <b>{message}</b>",
+    "text": texto_resposta",
     "parse_mode": "HTML",
   }
   if message == "/start":
