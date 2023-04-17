@@ -53,16 +53,16 @@ def telegram_bot():
     # captura as cordenadas dos focos na base do INPE, cruza com as coordenadas da cidade indicada pelo usuário, calculando a distância entre os pontos. Seleciona a menor distância e retorna o valor.
     coordenadas = []
     distancia = []
-      for x, y in zip(foco_atual.latitude.values, foco_atual.longitude.values):
-        lat_long = (x, y)
-        coordenadas.append(lat_long)
-      for n in coordenadas:
-        km = haversine(cidade_bot_coord, n)
-        distancia.append(km)
-      foco_atual['distancia_km'] = distancia
-      foco_incendio = int(foco_atual['distancia_km'].min())
+    for x, y in zip(foco_atual.latitude.values, foco_atual.longitude.values):
+      lat_long = (x, y)
+      coordenadas.append(lat_long)
+    for n in coordenadas:
+      km = haversine(cidade_bot_coord, n)
+      distancia.append(km)
+    foco_atual['distancia_km'] = distancia
+    foco_incendio = int(foco_atual['distancia_km'].min())
 
-      texto_resposta = (f"O foco de incêndio mais próximo detectado pelo Inpe, nas últimas 48h, encontra-se a {foco_incendio}km de você.")
+    texto_resposta = (f"O foco de incêndio mais próximo detectado pelo Inpe, nas últimas 48h, encontra-se a {foco_incendio}km de você.")
   
   # caso a palavra não seja um município
   else:
