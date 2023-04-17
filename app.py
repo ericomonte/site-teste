@@ -27,10 +27,12 @@ def telegram_bot():
   update = request.json
   chat_id = update["message"]["chat"]["id"]
   message = update["message"]["text"]
-  nova_mensagem = {"chat_id": chat_id, "text": message}
-  requests.post(f"https://api.telegram.org./bot{TELEGRAM_API_KEY}/sendMessage", data=nova_mensagem)
-  
-   # Define qual será a resposta e envia
+  nova_mensagem = {
+    "chat_id": chat_id,
+    "text": f"Você enviou a mensagem: <b>{message}</b>",
+    "parse_mode": "HTML",
+  }
+  # Define qual será a resposta e envia
   if message == "/start":
     texto_resposta = "Olá! Seja bem-vinda(o). Se você chegou aqui está preocupado com o avanço dos incêndios florestais. Envie o nome de sua cidade para saber se está próximo a focos de incêndio:"
   else:
