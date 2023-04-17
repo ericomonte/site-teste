@@ -31,47 +31,7 @@ def telegram_bot():
     texto_resposta = "Olá! Seja bem-vinda(o). Se você chegou aqui está preocupado com o avanço dos incêndios florestais. Envie o nome de sua cidade para saber se está próximo a focos de incêndio:"
   
   else:
-    # recebe a cidade pelo bot do telegram retira acentos e transforma em caixa baixa
-    message = unidecode(message)
-    message = message.lower()
-    
-    try:
-    # procura a cidade na planilha do sheets onde consta a base de municipios do IBGE + respectivas coordenadas de latitude e longitude
-      cell = sheet.find(message)
-    
-    except gspread.CellNotFound:
-      row = None
-    # obtém as coordenadas da célula encontrada e caprura os dados nas colunas à direita
-      row = cell.row
-      col = cell.col
-      latitude = sheet.cell(row, col+1).value
-      longitude = sheet.cell(row, col+2).value
-      message_coord = (float(latitude), float(longitude))
-    
-    # acessa a api do Programa Queimadas do INPE com os dados de novos focos de incêndio nas últimas 48h
-      inpe_focos48h_url = 'https://queimadas.dgi.inpe.br/home/download?id=focos_brasil&time=48h&outputFormat=csv&utm_source=landing-page&utm_medium=landing-page&utm_campaign=dados-abertos&utm_content=focos_brasil_48h'
-      foco_atual = pd.read_csv(inpe_focos48h_url)
-    
-    # padroniza em caixa alta e remove acentos
-      foco_atual['municipio'] = [x.upper() for x in foco_atual['municipio']]
-      foco_atual['nome'] = foco_atual['municipio'].str.normalize('NFKD').str.encode('ascii', errors='ignore').str.decode('utf-8')
-    
-    # captura as cordenadas dos focos na base do INPE, cruza com as coordenadas da cidade indicada pelo usuário, calculando a distância entre os pontos. Seleciona a menor distância e retorna o valor.
-      coordenadas = []
-      distancia = []
-      for x, y in zip(foco_atual.latitude.values, foco_atual.longitude.values):
-        lat_long = (x,y)
-        coordenadas.append(lat_long)
-      for n in coordenadas:
-        km = haversine(message_coord, n)
-        distancia.append(km)
-      foco_atual['distancia_km'] = distancia
-      foco_incendio = int(foco_atual['distancia_km'].min())
-    
-      texto_resposta = (f"O foco de incêndio mais próximo, detectado pelo Inpe nas últimas 48h, encontra-se a {foco_incendio}km de você.")
-    
-    except gspread.CellNotFound:
-      texto_resposta = "Olá, não entendi o que você quis dizer. Se você chegou aqui está preocupado com o avanço dos incêndios florestais. Envie o nome de sua cidade para saber se está próximo a focos de incêndio:"
+    texto_respost = "Não entendi novamente."
   
   nova_mensagem = {
     "chat_id": chat_id,
