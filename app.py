@@ -31,8 +31,8 @@ def telegram_bot():
   
   else:
     # recebe a cidade pelo bot do telegram retira acentos e transforma em caixa baixa
-    message = unidecode(cidade_bot)
-    message = cidade_bot = cidade_bot.lower()
+    message = unidecode(message)
+    message = message.lower()
     
     # procura a cidade na planilha do sheets onde consta a base de municipios do IBGE + respectivas coordenadas de latitude e longitude
     cell = sheet_municipios.find(message)
@@ -42,7 +42,7 @@ def telegram_bot():
     col = cell.col
     latitude = sheet_municipios.cell(row, col+1).value
     longitude = sheet_municipios.cell(row, col+2).value
-    message = (float(latitude), float(longitude))
+    message_coord = (float(latitude), float(longitude))
     
     # acessa a api do Programa Queimadas do INPE com os dados de novos focos de incêndio nas últimas 48h
     inpe_focos48h_url = 'https://queimadas.dgi.inpe.br/home/download?id=focos_brasil&time=48h&outputFormat=csv&utm_source=landing-page&utm_medium=landing-page&utm_campaign=dados-abertos&utm_content=focos_brasil_48h'
@@ -59,7 +59,7 @@ def telegram_bot():
       lat_long = (x,y)
       coordenadas.append(lat_long)
     for n in coordenadas:
-      km = haversine(cidade_bot_coord, n)
+      km = haversine(message_coord, n)
       distancia.append(km)
     foco_atual['distancia_km'] = distancia
     foco_incendio = int(foco_atual['distancia_km'].min())
