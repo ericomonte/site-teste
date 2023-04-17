@@ -35,6 +35,7 @@ def telegram_bot():
     message = unidecode(message)
     message = message.lower()
     
+    try:
     # procura a cidade na planilha do sheets onde consta a base de municipios do IBGE + respectivas coordenadas de latitude e longitude
     cell = sheet.find(message)
     
@@ -67,8 +68,8 @@ def telegram_bot():
     
     texto_resposta = (f"O foco de incêndio mais próximo, detectado pelo Inpe nas últimas 48h, encontra-se a {foco_incendio}km de você.")
     
-    #else:
-      #texto_resposta = "Olá, não entendi o que você quis dizer. Se você chegou aqui está preocupado com o avanço dos incêndios florestais. Envie o nome de sua cidade para saber se está próximo a focos de incêndio:"
+    except gspread.CellNotFound:
+      texto_resposta = "Olá, não entendi o que você quis dizer. Se você chegou aqui está preocupado com o avanço dos incêndios florestais. Envie o nome de sua cidade para saber se está próximo a focos de incêndio:"
   
   nova_mensagem = {
     "chat_id": chat_id,
