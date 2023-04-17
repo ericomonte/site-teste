@@ -66,7 +66,7 @@ def telegram_bot():
   
   # caso a palavra não seja um município
   else:
-    texto_resposta = f"Desculpe, {message} não é uma cidade válida. Envie o nome de sua cidade para saber se você está próximo(a) a focos de incêndio:"
+    texto_resposta = f"Desculpe, "{message}" não é uma cidade válida. Envie o nome de sua cidade para saber se você está próximo(a) a focos de incêndio:"
   
   nova_mensagem = {
     "chat_id": chat_id,
@@ -87,7 +87,7 @@ menu = """
 
 @app.route("/")
 def index():
-  return menu + "Olá, mundo! Esse é meu site. (Érico Monte)"
+  return menu + "Olá, mundo! Essa é a página do Data Forest bot. As queimadas estão se alastrando pelo país. Vou te ajudar a descobrir quão próximo você está de uma queimada, acessando os dados do INPE."
 
 
 @app.route("/dedoduro")
