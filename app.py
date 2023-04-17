@@ -17,7 +17,7 @@ with open("credenciais.json", mode="w") as arquivo:
 conta = ServiceAccountCredentials.from_json_keyfile_name("credenciais.json")
 api = gspread.authorize(conta)
 planilha = api.open_by_key("1RAvxiZG3f-WhfnX2I7XgyB6TKhyVxuJT5vVAMzO45_U")
-sheet = planilha.worksheet("Sheet1")
+sheet = planilha.worksheet("municipios")
 app = Flask(__name__)
 
 @app.route("/telegram-bot", methods=["POST"])
@@ -35,7 +35,7 @@ def telegram_bot():
     message = message.lower()
     
     # procura a cidade na planilha do sheets onde consta a base de municipios do IBGE + respectivas coordenadas de latitude e longitude
-    cell = sheet_municipios.find(message)
+    cell = sheet.find(message)
     
     # obtém as coordenadas da célula encontrada e caprura os dados nas colunas à direita
     row = cell.row
