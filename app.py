@@ -66,10 +66,8 @@ def telegram_bot():
     
     texto_resposta = (f"O foco de incêndio mais próximo, detectado pelo Inpe nas últimas 48h, encontra-se a {foco_incendio}km de você.")
     
-    #elif:
-      
-    
-    #texto_resposta = "Olá, não entendi o que você quis dizer. Se você chegou aqui está preocupado com o avanço dos incêndios florestais. Envie o nome de sua cidade para saber se está próximo a focos de incêndio:"
+    elif:
+      texto_resposta = "Olá, não entendi o que você quis dizer. Se você chegou aqui está preocupado com o avanço dos incêndios florestais. Envie o nome de sua cidade para saber se está próximo a focos de incêndio:"
   
   nova_mensagem = {
     "chat_id": chat_id,
