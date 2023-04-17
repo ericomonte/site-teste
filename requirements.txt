@@ -3,3 +3,6 @@ gunicorn
 requests
 gspread
 oauth2client
+pandas
+haversine
+unidecode
