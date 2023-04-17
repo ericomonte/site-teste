@@ -31,7 +31,7 @@ def telegram_bot():
     texto_resposta = "Olá! Seja bem-vinda(o). Se você chegou aqui está preocupado com o avanço dos incêndios florestais. Envie o nome de sua cidade para saber se está próximo a focos de incêndio:"
   
   else:
-    texto_respost = "Não entendi novamente."
+    texto_resposta = "Não entendi novamente."
   
   nova_mensagem = {
     "chat_id": chat_id,
