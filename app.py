@@ -72,9 +72,9 @@ def telegram_bot():
     foco_incendio = int(foco_atual['distancia_km'].min())
     texto_resposta = (f"O foco de incêndio mais próximo, detectado pelo Inpe nas últimas 48h, encontra-se a {foco_incendio}km de você.") 
     
-  except gspread.exceptions.CellNotFound:
+  #except gspread.exceptions.CellNotFound:
   # Envia mensagem de erro para o usuário
-    texto_resposta = "Desculpe, não foi possível encontrar a cidade que você digitou. Por favor, tente novamente usando o comando /start."
+    #texto_resposta = "Desculpe, não foi possível encontrar a cidade que você digitou. Por favor, tente novamente usando o comando /start."
   
   nova_mensagem = {"chat_id": chat_id, "text": texto_resposta}
   requests.post(f"https://api.telegram.org./bot{TELEGRAM_API_KEY}/sendMessage", data=nova_mensagem)
