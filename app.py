@@ -41,8 +41,12 @@ def telegram_bot():
     #texto_resposta = f'''Olá! Seja bem-vindo(a), {first_name}. \nSe você chegou aqui, está preocupado(a) com o avanço queimadas. \nSó nas últimas 48h o satélite \U0001F4E1 do INPE observou {len(foco_atual)} focos de incêndios florestais no Brasil. \nEnvie o nome de sua cidade para saber se você está próximo(a) a focos de incêndio \U0001F525:'''
   
   elif message == "1":
-    texto_resposta = f'''Nas últimas 48h o satélite do INPE registrou focos de incêndios florestais nos estados:\n {foco_atual['estado'].value_counts().to_dict()}'''
-    
+    estados = foco_atual['estado'].value_counts().to_dict()
+    estados_lista = ''
+    for key, value in estados.items():
+      estados_lista += f"{key}: {value}\n"
+    texto_resposta = f'''Nas últimas 48h o satélite do INPE registrou focos de incêndios florestais nos estados:\n{estados_lista}'''
+   
   elif message == "2":
     texto_resposta = f'''Nas últimas 48h o satélite do INPE registrou {len(foco_atual)} focos de incêndios florestais nos biomas:\n
 Amazônia: {len(foco_atual[foco_atual['bioma'].str.contains('Amazônia')])}
