@@ -36,7 +36,7 @@ def telegram_bot():
   message = unidecode(message)
   message = message.lower()
 
-  if message in ("/start", "start", "oi", "ola", "bom dia", "boa tarde", "boa noite", "opa", 0):
+  if message in ("/start", "start", "oi", "ola", "bom dia", "boa tarde", "boa noite", "opa", "0"):
     texto_resposta = f'''Olá! Seja bem-vindo(a), {first_name}. \nEstamos preocupados com o avanço de queimadas no país. Só nas últimas 48h o INPE observou {len(foco_atual)} focos de incêndios florestais \U0001F525.\n\n\U0001F3D8 Digite o nome de sua cidade para saber se você está próximo(a) a focos de incêndio.\n\nOu digite um número abaixo e veja a quantidade de focos em: \n1 - Estados; \n2 - Biomas.'''
     #texto_resposta = f'''Olá! Seja bem-vindo(a), {first_name}. \nSe você chegou aqui, está preocupado(a) com o avanço queimadas. \nSó nas últimas 48h o satélite \U0001F4E1 do INPE observou {len(foco_atual)} focos de incêndios florestais no Brasil. \nEnvie o nome de sua cidade para saber se você está próximo(a) a focos de incêndio \U0001F525:'''
   
