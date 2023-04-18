@@ -67,11 +67,11 @@ def telegram_bot():
     #biomas = foco_atual['bioma'].value_counts()
     #texto_resposta = (f'Nas últimas 48h o satéite do INPE registrou focos de incêndios nos biomas:\n{biomas}')
     texto_resposta = f'''Nas últimas 48h o satélite do INPE registrou focos de incêndios florestais nos biomas:\n
-Amazônia: {len(foco_atual[foco_atual['bioma'].str.contains('Amazônia')])}\n
-Caatinga: {len(foco_atual[foco_atual['bioma'].str.contains('Caatinga')])}\n
-Cerrado: {len(foco_atual[foco_atual['bioma'].str.contains('Cerrado')])}\n
+Amazônia:       {len(foco_atual[foco_atual['bioma'].str.contains('Amazônia')])}\n
+Caatinga:       {len(foco_atual[foco_atual['bioma'].str.contains('Caatinga')])}\n
+Cerrado:        {len(foco_atual[foco_atual['bioma'].str.contains('Cerrado')])}\n
 Mata Atlântica: {len(foco_atual[foco_atual['bioma'].str.contains('Mata Atlântica')])}\n
-Pampa: {len(foco_atual[foco_atual['bioma'].str.contains('Pampa')])}'''
+Pampa:          {len(foco_atual[foco_atual['bioma'].str.contains('Pampa')])}'''
   
   # caso a palavra não seja um município
   else:
