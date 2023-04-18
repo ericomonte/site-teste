@@ -36,7 +36,7 @@ def telegram_bot():
   message = unidecode(message)
   message = message.lower()
 
-  if message in ("/start", "start", "oi", "ola", "bom dia", "boa tarde", "boa noite", "opa"):
+  if message in ("/start", "start", "oi", "ola", "bom dia", "boa tarde", "boa noite", "opa", 0):
     texto_resposta = f'''Olá! Seja bem-vindo(a), {first_name}. \nEstamos preocupados com o avanço de queimadas no país. Só nas últimas 48h o INPE observou {len(foco_atual)} focos de incêndios florestais \U0001F525.\n\n\U0001F3D8 Digite o nome de sua cidade para saber se você está próximo(a) a focos de incêndio.\n\nOu digite um número abaixo e veja a quantidade de focos em: \n1 - Estados; \n2 - Biomas.'''
     #texto_resposta = f'''Olá! Seja bem-vindo(a), {first_name}. \nSe você chegou aqui, está preocupado(a) com o avanço queimadas. \nSó nas últimas 48h o satélite \U0001F4E1 do INPE observou {len(foco_atual)} focos de incêndios florestais no Brasil. \nEnvie o nome de sua cidade para saber se você está próximo(a) a focos de incêndio \U0001F525:'''
   
@@ -45,7 +45,7 @@ def telegram_bot():
     estados_lista = ''
     for key, value in estados.items():
       estados_lista += f"{key}: {value}\n"
-    texto_resposta = f'''Nas últimas 48h o satélite do INPE registrou focos de incêndios florestais nos estados:\n{estados_lista}'''
+    texto_resposta = f'''Nas últimas 48h o satélite do INPE registrou focos de incêndios florestais nos estados:\n{estados_lista}\n\n Digite 0 para voltar ao menu inicial.'''
    
   elif message == "2":
     texto_resposta = f'''Nas últimas 48h o satélite do INPE registrou {len(foco_atual)} focos de incêndios florestais nos biomas:\n
@@ -53,7 +53,7 @@ Amazônia: {len(foco_atual[foco_atual['bioma'].str.contains('Amazônia')])}
 Caatinga: {len(foco_atual[foco_atual['bioma'].str.contains('Caatinga')])}
 Cerrado: {len(foco_atual[foco_atual['bioma'].str.contains('Cerrado')])}
 Mata Atlântica: {len(foco_atual[foco_atual['bioma'].str.contains('Mata Atlântica')])}
-Pampa: {len(foco_atual[foco_atual['bioma'].str.contains('Pampa')])}
+Pampa: {len(foco_atual[foco_atual['bioma'].str.contains('Pampa')])}\n\n Digite 0 para voltar ao menu inicial.
 '''  
   
   elif message in municipios:
@@ -78,11 +78,11 @@ Pampa: {len(foco_atual[foco_atual['bioma'].str.contains('Pampa')])}
     foco_atual['distancia_km'] = distancia
     foco_incendio = int(foco_atual['distancia_km'].min())
 
-    texto_resposta = (f"O foco de incêndio mais próximo detectado pelo Inpe, nas últimas 48h, encontra-se a {foco_incendio}km de você.")
+    texto_resposta = (f"O foco de incêndio mais próximo detectado pelo Inpe, nas últimas 48h, encontra-se a {foco_incendio}km de você. \n\n Digite 0 para voltar ao menu inicial.")
     
   # caso a palavra não seja um município
   else:
-    texto_resposta = f"Desculpe, {message} não é uma cidade válida. Envie o nome de sua cidade para saber se você está próximo(a) a focos de incêndio:"
+    texto_resposta = f"Desculpe, {message} não é uma cidade válida. \n\nEnvie o nome de sua cidade para saber se você está próximo(a) a focos de incêndio. \n\n Ou digite 0 para voltar ao menu inicial."
   
   nova_mensagem = {
     "chat_id": chat_id,
