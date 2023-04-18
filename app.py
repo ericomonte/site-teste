@@ -37,11 +37,11 @@ def telegram_bot():
   message = message.lower()
 
   if message in ("/start", "start", "oi", "ola", "bom dia", "boa tarde", "boa noite", "opa"):
-    texto_resposta = f'''Olá! Seja bem-vindo(a), {first_name}. \nEstamos preocupados com o avanço de queimadas no país. \nSó nas últimas 48h o \U0001F4E1 do INPE observou {len(foco_atual)} focos de incêndios florestais \U0001F525. \nDigite um número e saiba mais sobre o monitoramento: \n1 - Estados e Municípios; \n2 - Biomas; \n\U0001F3D8 Ou digite o nome de sua cidade para saber se você está próximo(a) a focos de incêndio.'''
+    texto_resposta = f'''Olá! Seja bem-vindo(a), {first_name}. \nEstamos preocupados com o avanço de queimadas no país. Só nas últimas 48h o \U0001F4E1 do INPE observou {len(foco_atual)} focos de incêndios florestais \U0001F525. \nDigite um número e saiba mais sobre o monitoramento: \n1 - Estados e Municípios; \n2 - Biomas; \n\U0001F3D8 Ou digite o nome de sua cidade para saber se você está próximo(a) a focos de incêndio.'''
     #texto_resposta = f'''Olá! Seja bem-vindo(a), {first_name}. \nSe você chegou aqui, está preocupado(a) com o avanço queimadas. \nSó nas últimas 48h o satélite \U0001F4E1 do INPE observou {len(foco_atual)} focos de incêndios florestais no Brasil. \nEnvie o nome de sua cidade para saber se você está próximo(a) a focos de incêndio \U0001F525:'''
   
   elif message == "1":
-    texto_resposta = f'''Nas últimas 48h o satélite do INPE registrou focos de incêndios florestais nas localidades abaixo:\n {foco_atual.filter(['estado','municipio']).sort_values(by=['estado']).drop_duplicates()}'''
+    texto_resposta = f'''Nas últimas 48h o satélite do INPE registrou focos de incêndios florestais nos estados:\n {foco_atual.filter(['estado','municipio']).sort_values(by=['estado']).drop_duplicates()}\n\n{estados = foco_atual['estado'].drop_duplicates().tolist()}'''
     
   elif message == "2":
     texto_resposta = f'''Nas últimas 48h o satélite do INPE registrou {len(foco_atual)} focos de incêndios florestais nos biomas:\n
