@@ -19,6 +19,11 @@ api = gspread.authorize(conta)
 planilha = api.open_by_key("1RAvxiZG3f-WhfnX2I7XgyB6TKhyVxuJT5vVAMzO45_U")
 sheet_municipios = planilha.worksheet("municipios")
 municipios = sheet_municipios.col_values(2)
+# acessa a api do Programa Queimadas do INPE com os dados de novos focos de incêndio nas últimas 48h
+inpe_focos48h_url = 'https://queimadas.dgi.inpe.br/home/download?id=focos_brasil&time=48h&outputFormat=csv&utm_source=landing-page&utm_medium=landing-page&utm_campaign=dados-abertos&utm_content=focos_brasil_48h'
+foco_atual = pd.read_csv(inpe_focos48h_url)
+# remove acentos
+foco_atual['nome'] = foco_atual['municipio'].str.normalize('NFKD').str.encode('ascii', errors='ignore').str.decode('utf-8')
 app = Flask(__name__)
 
 @app.route("/telegram-bot", methods=["POST"])
@@ -43,13 +48,6 @@ def telegram_bot():
     longitude = sheet_municipios.cell(row, col+2).value
     cidade_bot_coord = (float(latitude), float(longitude))
 
-    # acessa a api do Programa Queimadas do INPE com os dados de novos focos de incêndio nas últimas 48h
-    inpe_focos48h_url = 'https://queimadas.dgi.inpe.br/home/download?id=focos_brasil&time=48h&outputFormat=csv&utm_source=landing-page&utm_medium=landing-page&utm_campaign=dados-abertos&utm_content=focos_brasil_48h'
-    foco_atual = pd.read_csv(inpe_focos48h_url)
-
-    # remove acentos
-    foco_atual['nome'] = foco_atual['municipio'].str.normalize('NFKD').str.encode('ascii', errors='ignore').str.decode('utf-8')
-
     # captura as cordenadas dos focos na base do INPE, cruza com as coordenadas da cidade indicada pelo usuário, calculando a distância entre os pontos. Seleciona a menor distância e retorna o valor.
     coordenadas = []
     distancia = []
@@ -66,7 +64,7 @@ def telegram_bot():
   
   # caso a palavra não seja um município
   else:
-    texto_resposta = f"Desculpe, "{message}" não é uma cidade válida. Envie o nome de sua cidade para saber se você está próximo(a) a focos de incêndio:"
+    texto_resposta = f"Desculpe, {message} não é uma cidade válida. Envie o nome de sua cidade para saber se você está próximo(a) a focos de incêndio:"
   
   nova_mensagem = {
     "chat_id": chat_id,
