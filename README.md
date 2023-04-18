@@ -8,7 +8,7 @@ O [Data Forest Bot](https://web.telegram.org/k/#@data_forest_bot) acessa os dado
 
 ### Código
 
-- O arquivo app.py contém código python que:
+- O arquivo *app.py* contém código python que:
   - Usa **Flask** para acessar hospedagem em nuvem - **[Render](https://render.com/)**
   - Acessa API do Telegram e lista comandos para o bot
-- O arquivo requirements contém as bibliotecas utilizadas
+- O arquivo *requirements.txt* contém as bibliotecas utilizadas
