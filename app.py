@@ -37,7 +37,7 @@ def telegram_bot():
   message = message.lower()
 
   if message in ("/start", "start", "oi", "ola", "bom dia", "boa tarde", "boa noite", "opa"):
-    texto_resposta = f'''Olá! Seja bem-vindo(a) {first_name}. Se você chegou aqui, está preocupado(a) com o avanço dos u\U0001F525 incêndios florestais u\U0001F525. Envie o nome de sua cidade para saber se você está próximo(a) a focos de incêndio:'''
+    texto_resposta = f'''Olá! Seja bem-vindo(a) {first_name}. \nSe você chegou aqui, está preocupado(a) com o avanço queimadas. \n Só nas últimas 48h o satélite \U0001F4E1 do INPE observou {len(foco_atual)} focos de incêndios florestais no Brasil. \nEnvie o nome de sua cidade para saber se você está próximo(a) a \U0001F525 focos de incêndio \U0001F525:'''
   
   elif message in municipios:
     # procura a cidade na planilha do sheets onde consta a base de municipios do IBGE + respectivas coordenadas de latitude e longitude
