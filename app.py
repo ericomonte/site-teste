@@ -37,7 +37,20 @@ def telegram_bot():
   message = message.lower()
 
   if message in ("/start", "start", "oi", "ola", "bom dia", "boa tarde", "boa noite", "opa"):
-    texto_resposta = f'''Olá! Seja bem-vindo(a), {first_name}. \nSe você chegou aqui, está preocupado(a) com o avanço queimadas. \nSó nas últimas 48h o satélite \U0001F4E1 do INPE observou {len(foco_atual)} focos de incêndios florestais no Brasil. \nEnvie o nome de sua cidade para saber se você está próximo(a) a focos de incêndio \U0001F525:'''
+    texto_resposta = f'''Olá! Seja bem-vindo(a), {first_name}. \nEstamos preocupados com o avanço de queimadas no país. \nSó nas últimas 48h o \U0001F4E1 do INPE observou {len(foco_atual)} focos de incêndios florestais \U0001F525. \nDigite um número e saiba mais sobre o monitoramento: \n1 - Estados e Municípios; \n2 - Biomas; \n\U0001F3D8 Ou digite o nome de sua cidade para saber se você está próximo(a) a focos de incêndio.'''
+    #texto_resposta = f'''Olá! Seja bem-vindo(a), {first_name}. \nSe você chegou aqui, está preocupado(a) com o avanço queimadas. \nSó nas últimas 48h o satélite \U0001F4E1 do INPE observou {len(foco_atual)} focos de incêndios florestais no Brasil. \nEnvie o nome de sua cidade para saber se você está próximo(a) a focos de incêndio \U0001F525:'''
+  
+  elif message == "1":
+    texto_resposta = f'''Nas últimas 48h o satélite do INPE registrou focos de incêndios florestais nas localidades abaixo:\n {foco_atual.filter(['estado','municipio']).sort_values(by=['estado']).drop_duplicates()}'''
+    
+  elif message == "2":
+    texto_resposta = f'''Nas últimas 48h o satélite do INPE registrou {len(foco_atual)} focos de incêndios florestais nos biomas:\n
+Amazônia: {len(foco_atual[foco_atual['bioma'].str.contains('Amazônia')])}
+Caatinga: {len(foco_atual[foco_atual['bioma'].str.contains('Caatinga')])}
+Cerrado: {len(foco_atual[foco_atual['bioma'].str.contains('Cerrado')])}
+Mata Atlântica: {len(foco_atual[foco_atual['bioma'].str.contains('Mata Atlântica')])}
+Pampa: {len(foco_atual[foco_atual['bioma'].str.contains('Pampa')])}
+'''  
   
   elif message in municipios:
     # procura a cidade na planilha do sheets onde consta a base de municipios do IBGE + respectivas coordenadas de latitude e longitude
@@ -62,18 +75,7 @@ def telegram_bot():
     foco_incendio = int(foco_atual['distancia_km'].min())
 
     texto_resposta = (f"O foco de incêndio mais próximo detectado pelo Inpe, nas últimas 48h, encontra-se a {foco_incendio}km de você.")
-  
-  elif message == "biomas":
-    #biomas = foco_atual['bioma'].value_counts()
-    #texto_resposta = (f'Nas últimas 48h o satéite do INPE registrou focos de incêndios nos biomas:\n{biomas}')
-    texto_resposta = f'''Nas últimas 48h o satélite do INPE registrou focos de incêndios florestais nos biomas:\n
-Amazônia: {len(foco_atual[foco_atual['bioma'].str.contains('Amazônia')])}
-Caatinga: {len(foco_atual[foco_atual['bioma'].str.contains('Caatinga')])}
-Cerrado:  {len(foco_atual[foco_atual['bioma'].str.contains('Cerrado')])}
-Mata Atlântica: {len(foco_atual[foco_atual['bioma'].str.contains('Mata Atlântica')])}
-Pampa:    {len(foco_atual[foco_atual['bioma'].str.contains('Pampa')])}
-'''
-  
+    
   # caso a palavra não seja um município
   else:
     texto_resposta = f"Desculpe, {message} não é uma cidade válida. Envie o nome de sua cidade para saber se você está próximo(a) a focos de incêndio:"
