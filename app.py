@@ -79,25 +79,6 @@ def telegram_bot():
   return "ok"
 
 
-
-menu = """
-<a href="/">Página inicial</a> | <a href="/sobre">Sobre</a> | <a href="/contato">Contato</a>
-<br>
-"""
-
 @app.route("/")
 def index():
-  return menu + "Olá, mundo! Essa é a página do Data Forest bot. As queimadas estão se alastrando pelo país. Vou te ajudar a descobrir quão próximo você está de uma queimada, acessando os dados do INPE."
-
-
-@app.route("/dedoduro")
-def dedoduro():
-  mensagem = {"chat_id": TELEGRAM_ADMIN_ID, "text": "Alguém acessou a página dedo duro!"}
-  resposta = requests.post(f"https://api.telegram.org/bot{TELEGRAM_API_KEY}/sendMessage", data=mensagem)
-  return f"Mensagem enviada. Resposta ({resposta.status_code}): {resposta.text}"
-
-
-@app.route("/dedoduro2")
-def dedoduro2():
-  sheet.append_row(["xx", "xx", "a partir do Flask"])
-  return "Planilha escrita!"
+  return "Olá, mundo! Essa é a página do Data Forest bot. As queimadas estão se alastrando pelo país. Vou te ajudar a descobrir quão próximo você está de uma queimada, acessando os dados do INPE."
