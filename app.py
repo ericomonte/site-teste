@@ -62,8 +62,7 @@ def telegram_bot():
 
     texto_resposta = (f"O foco de incêndio mais próximo detectado pelo Inpe, nas últimas 48h, encontra-se a {foco_incendio}km de você.")
   
-  elif:
-    message == "biomas"
+  elif message == "biomas":
     biomas = foco_atual['bioma'].value_counts()
     texto_resposta = (f'Nas últimas 48h o satéite do INPE registrou focos de incêndios nos biomas:\n{biomas}')
   
